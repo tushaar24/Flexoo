@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    common dimens-->
+    <dimen name="sp_36">36sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+
+    <!--    custome dimens-->
+    <dimen name="Headline4TextSize">@dimen/sp_36</dimen>0
+    <dimen name="HeadLine6TextSize">@dimen/sp_18</dimen>
+    <dimen name="Body2TextSize">@dimen/sp_12</dimen>
+    <dimen name="Body1TextSize">@dimen/sp_14</dimen>
+</resources>

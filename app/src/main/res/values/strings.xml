@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Flexxo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_db_title">MOVIE DB APP</string>
+    <string name="categories_title">Categories</string>
+    <string name="search_movies_hint">Search for Movies</string>
+    <string name="title">Title:</string>
+    <string name="release_date_title">Release Date:</string>
+    <string name="movie_detail_release_date_title">Release Date</string>
+    <string name="flexoo_title">Flexoo Watch</string>
+    <string name="about_movies_title">About Movies</string>
+    <string name="overview_title">Overview</string>
+    <string name="popularity_title">Popularity</string>
+    <string name="rate_count_title">Rate Count</string>
+    <string name="average_rating_title">Average Rating:</string>
+    <string name="movie_detail_average_rating_title">Average Rating</string>
+    <string name="search_results_title">Search Results:</string>
+</resources>
