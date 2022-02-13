@@ -7,32 +7,32 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.flexxo.data.models.Movie
-import com.example.flexxo.data.repository.paging.PopularMoviesPagingSource
-import com.example.flexxo.data.repository.paging.TopRatedMoviesPagingSource
-import com.example.flexxo.data.repository.paging.UpComingPagingSource
-import com.example.flexxo.data.repository.remote.RemoteRepository
+import com.example.flexxo.data.paging.PopularMoviesPagingSource
+import com.example.flexxo.data.paging.TopRatedMoviesPagingSource
+import com.example.flexxo.data.paging.UpComingPagingSource
+import com.example.flexxo.data.repository.Repository
 import kotlinx.coroutines.flow.Flow
 
 class HomeFragmentViewModel : ViewModel() {
 
-    private val remoteRepository = RemoteRepository()
+    private val repository = Repository()
 
     fun getTopRatedMovies(): Flow<PagingData<Movie>> = Pager(
-        config = PagingConfig(10)
+        config = PagingConfig(100)
     ) {
-        TopRatedMoviesPagingSource(remoteRepository.movieService)
+        TopRatedMoviesPagingSource(repository.remoteRepository)
     }.flow.cachedIn(viewModelScope)
 
     fun getPopularMovies(): Flow<PagingData<Movie>> = Pager(
-        config = PagingConfig(5)
+        config = PagingConfig(100)
     ) {
-        PopularMoviesPagingSource(remoteRepository.movieService)
+        PopularMoviesPagingSource(repository.remoteRepository)
     }.flow.cachedIn(viewModelScope)
 
     fun getUpComingMovies(): Flow<PagingData<Movie>> = Pager(
-        config = PagingConfig(40)
+        config = PagingConfig(100)
     ) {
-        UpComingPagingSource(remoteRepository.movieService)
+        UpComingPagingSource(repository.remoteRepository)
     }.flow.cachedIn(viewModelScope)
 
 

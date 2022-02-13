@@ -1,7 +1,7 @@
 package com.example.flexxo.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.flexxo.R
 
 class MainActivity : AppCompatActivity() {

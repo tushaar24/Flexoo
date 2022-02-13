@@ -8,45 +8,28 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.data.models.Movie
 import com.example.flexxo.databinding.FragmentHomeBinding
+import com.example.flexxo.utils.Constants.MOVIE_DETAILS
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
-private enum class Buttons(val id: Int) {
-    POPULAR_BUTTON(1),
-    UP_COMING_BUTTON(2),
-    TOP_RATED_BUTTON(3);
-
-    companion object {
-        fun create(x: Int): Buttons {
-            return when (x) {
-                1 -> POPULAR_BUTTON
-                2 -> UP_COMING_BUTTON
-                3 -> TOP_RATED_BUTTON
-                -1 -> TOP_RATED_BUTTON
-                else -> throw IllegalArgumentException("$x is not a valid id for Buttons")
-            }
-        }
-    }
-}
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mAdapter: MoviesAdapter
+    private var upComingMoviesAdapter: MoviesAdapter? = null
+    private var popularMoviesAdapter: MoviesAdapter? = null
+    private var topMoviesAdapter: MoviesAdapter? = null
     private val mViewModel: HomeFragmentViewModel by viewModels()
-    private var buttonState = -1
+    private var selectedButtonId = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,64 +37,124 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.progressBar.visibility = View.VISIBLE
-
-
-        val onClick: (Movie) -> Unit = {
-            val bundle = Bundle()
-            bundle.putSerializable("movieDetails", it)
-            val direction =
-                HomeFragmentDirections.actionHomeFragmentToMovieDetailFragment().setMovieDetails(it)
-            findNavController().navigate(direction)
-        }
-
-        mAdapter = MoviesAdapter(onClick, requireContext())
-        mAdapter.stateRestorationPolicy =
-            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        binding.rvMovies.layoutManager = LinearLayoutManager(requireContext())
 
         binding.btnPopular.setOnClickListener {
-            if (!it.isSelected) {
-                binding.progressBar.visibility = View.VISIBLE
-                setButtonInFocus(Buttons.POPULAR_BUTTON.id)
-                getPopularMovies()
-                handleLoadingState()
-            }
+            handleOnclickButton(Buttons.POPULAR_BUTTON.id, it)
         }
 
         binding.btnTopRated.setOnClickListener {
-            if (!it.isSelected) {
-                binding.progressBar.visibility = View.VISIBLE
-                setButtonInFocus(Buttons.TOP_RATED_BUTTON.id)
-                getTopRatedMovies()
-                handleLoadingState()
-            }
+            handleOnclickButton(Buttons.TOP_RATED_BUTTON.id, it)
         }
 
         binding.btnUpComing.setOnClickListener {
-            if (!it.isSelected) {
-                binding.progressBar.visibility = View.VISIBLE
-                setButtonInFocus(Buttons.UP_COMING_BUTTON.id)
-                getUpComingMovies()
-            }
+            handleOnclickButton(Buttons.UP_COMING_BUTTON.id, it)
         }
+
         binding.svMovies.setOnClickListener {
             val directions = HomeFragmentDirections.actionHomeFragmentToSearchMoviesFragment()
             findNavController().navigate(directions)
         }
-
-        setUpRecyclerView()
     }
 
-    private fun setUpRecyclerView() {
-        binding.rvMovies.adapter = mAdapter
-        binding.rvMovies.layoutManager = LinearLayoutManager(requireContext())
+    override fun onStart() {
+        super.onStart()
+        setButtonInFocus(selectedButtonId)
+        getMovies(selectedButtonId)
     }
 
-    private fun setButtonInFocus(button: Int) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        buttonState = button
+    private fun getMovies(buttonId: Int) {
+        when (Buttons.create(buttonId)) {
+            Buttons.POPULAR_BUTTON -> {
+                getPopularMovies()
+            }
 
-        when (Buttons.create(button)) {
+            Buttons.TOP_RATED_BUTTON -> {
+                getTopRatedMovies()
+            }
+
+            Buttons.UP_COMING_BUTTON -> {
+                getUpComingMovies()
+            }
+        }
+    }
+
+    private fun getOnMovieItemClicked(): (Movie) -> Unit {
+        val onMovieItemClicked: (Movie) -> Unit = { movie ->
+            val bundle = Bundle()
+            bundle.putSerializable(MOVIE_DETAILS, movie)
+            val direction =
+                HomeFragmentDirections.actionHomeFragmentToMovieDetailFragment()
+                    .setMovieDetails(movie)
+            findNavController().navigate(direction)
+        }
+        return onMovieItemClicked
+    }
+
+    private fun getPopularMovies() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mViewModel.getPopularMovies().collectLatest { pagingData ->
+                popularMoviesAdapter = setAdapter()
+                binding.rvMovies.adapter = popularMoviesAdapter
+                popularMoviesAdapter?.submitData(lifecycle, pagingData)
+            }
+        }
+    }
+
+    private fun getTopRatedMovies() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mViewModel.getTopRatedMovies().collectLatest { pagingData ->
+                topMoviesAdapter = setAdapter()
+                binding.rvMovies.adapter = topMoviesAdapter
+                topMoviesAdapter?.submitData(lifecycle, pagingData)
+            }
+        }
+    }
+
+
+    private fun getUpComingMovies() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mViewModel.getUpComingMovies().collectLatest { pagingData ->
+                upComingMoviesAdapter = setAdapter()
+                binding.rvMovies.adapter = upComingMoviesAdapter
+                upComingMoviesAdapter?.submitData(lifecycle, pagingData)
+
+            }
+        }
+    }
+
+    private fun handleOnclickButton(buttonId: Int, view: View) {
+        if (!view.isSelected) {
+            binding.progressBar.visibility = View.VISIBLE
+            setButtonInFocus(buttonId)
+            getMovies(buttonId)
+        }
+    }
+
+    private fun setAdapter(): MoviesAdapter {
+        val onMovieItemClicked = getOnMovieItemClicked()
+        val mAdapter = MoviesAdapter(onMovieItemClicked, requireContext())
+        mAdapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        mAdapter.setLastPositionToMinusOne()
+        mAdapter.isDataSet.observe(requireActivity()) { dataSetChanged ->
+            if (dataSetChanged) {
+                setRecyclerViewVisible()
+            }
+        }
+        return mAdapter
+    }
+
+    private fun setButtonInFocus(buttonId: Int) {
+
+        selectedButtonId = buttonId
+
+        when (Buttons.create(buttonId)) {
             Buttons.TOP_RATED_BUTTON -> {
                 binding.btnUpComing.isSelected = false
                 binding.btnPopular.isSelected = false
@@ -132,70 +175,27 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getTopRatedMovies() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            mViewModel.getTopRatedMovies().collectLatest { pagingData ->
-                mAdapter.setLastPositionToMinusOne()
-                mAdapter.submitData(pagingData)
-            }
-        }
+    private fun setRecyclerViewVisible() {
+        binding.rvMovies.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 
-    private fun getPopularMovies() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            mViewModel.getPopularMovies().collectLatest { pagingData ->
-                mAdapter.setLastPositionToMinusOne()
-                mAdapter.submitData(pagingData)
+}
+
+private enum class Buttons(val id: Int) {
+    POPULAR_BUTTON(1),
+    UP_COMING_BUTTON(2),
+    TOP_RATED_BUTTON(3);
+
+    companion object {
+        fun create(buttonId: Int): Buttons {
+            return when (buttonId) {
+                1 -> POPULAR_BUTTON
+                2 -> UP_COMING_BUTTON
+                3 -> TOP_RATED_BUTTON
+                -1 -> TOP_RATED_BUTTON
+                else -> throw IllegalArgumentException("$buttonId is not a valid id for Buttons")
             }
         }
-    }
-
-    private fun getUpComingMovies() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            mViewModel.getUpComingMovies().collectLatest { pagingData ->
-                mAdapter.setLastPositionToMinusOne()
-                mAdapter.submitData(pagingData)
-            }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        setButtonInFocus(buttonState)
-
-        when (Buttons.create(buttonState)) {
-            Buttons.TOP_RATED_BUTTON -> {
-                getTopRatedMovies()
-                handleLoadingState()
-            }
-
-            Buttons.UP_COMING_BUTTON -> {
-                getUpComingMovies()
-                handleLoadingState()
-            }
-
-            Buttons.POPULAR_BUTTON -> {
-                getPopularMovies()
-                handleLoadingState()
-            }
-        }
-    }
-
-    fun handleLoadingState(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            mAdapter.loadStateFlow.collectLatest {
-                if(it.refresh is LoadState.NotLoading){
-                    binding.progressBar.visibility = View.GONE
-                    binding.rvMovies.visibility = View.VISIBLE
-                }
-
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
