@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
@@ -19,6 +20,7 @@ class MoviesAdapter(
 ) : PagingDataAdapter<Movie, MoviesAdapter.MoviesViewHolder>(DiffUtil) {
 
     private var lastPosition = -1
+    val isDataSet: MutableLiveData<Boolean> = MutableLiveData(false)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder.from(parent)
@@ -31,6 +33,11 @@ class MoviesAdapter(
         }
 
         setAnimations(holder.itemView, position)
+    }
+
+    override fun onViewAttachedToWindow(holder: MoviesViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        isDataSet.value = true
     }
 
     private fun setAnimations(viewToAnimate: View, position: Int) {

@@ -13,11 +13,11 @@ import com.example.flexxo.utils.Constants
 import com.squareup.picasso.Picasso
 
 class SearchMoviesAdapter(
-    private val mContext : Context,
+    private val mContext: Context,
     private val onClick: (Movie) -> Unit,
-    ) : RecyclerView.Adapter<SearchMoviesAdapter.SearchMoviesViewHolder>() {
+) : RecyclerView.Adapter<SearchMoviesAdapter.SearchMoviesViewHolder>() {
 
-    private var movieList : MutableList<Movie> = mutableListOf()
+    private var movieList: MutableList<Movie> = mutableListOf()
     private var lastPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchMoviesViewHolder {
@@ -38,10 +38,6 @@ class SearchMoviesAdapter(
             viewToAnimate.startAnimation(animation)
             lastPosition = position
         }
-    }
-
-    fun setLastPositionToMinusOne() {
-        lastPosition = -1
     }
 
     class SearchMoviesViewHolder(private val binding: ItemMovieBinding) :
@@ -79,7 +75,7 @@ class SearchMoviesAdapter(
         return movieList.size
     }
 
-    fun setData(newMovieList : List<Movie>){
+    fun setData(newMovieList: List<Movie>) {
         movieList.clear()
         movieList.addAll(newMovieList)
         notifyDataSetChanged()

@@ -17,11 +17,11 @@ import com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesViewMode
 
 class SearchMoviesFragment : Fragment() {
 
-    private var _binding : FragmentSearchMoviesBinding? = null
+    private var _binding: FragmentSearchMoviesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mAdapter : SearchMoviesAdapter
-    private val searchMoviesViewModel : SearchMoviesViewModel by viewModels()
-    private var savedQuery : String = ""
+    private lateinit var mAdapter: SearchMoviesAdapter
+    private val searchMoviesViewModel: SearchMoviesViewModel by viewModels()
+    private var savedQuery: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +36,9 @@ class SearchMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
-        binding.svMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.svMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if(!query.isNullOrEmpty()) {
+                if (!query.isNullOrEmpty()) {
                     searchMoviesViewModel.searchMovies(query)
                     binding.progressBar.visibility = View.VISIBLE
                     savedQuery = query
@@ -52,7 +52,7 @@ class SearchMoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                if(query != null) {
+                if (query != null) {
                     searchMoviesViewModel.searchMovies(query)
                     binding.progressBar.visibility = View.VISIBLE
                     savedQuery = query
@@ -73,7 +73,8 @@ class SearchMoviesFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable("movieDetails", it)
             val direction =
-                SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment().setMovieDetails(it)
+                SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment()
+                    .setMovieDetails(it)
             findNavController().navigate(direction)
         }
 
@@ -87,7 +88,7 @@ class SearchMoviesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        if(savedQuery.isNotEmpty() && savedQuery.isNotBlank()){
+        if (savedQuery.isNotEmpty() && savedQuery.isNotBlank()) {
             binding.progressBar.visibility = View.VISIBLE
         }
 
@@ -97,7 +98,7 @@ class SearchMoviesFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
         }
 
-        searchMoviesViewModel.isListIsEmpty.observe(requireActivity()){
+        searchMoviesViewModel.isListIsEmpty.observe(requireActivity()) {
             binding.progressBar.visibility = View.GONE
             mAdapter.setData(emptyList())
         }
