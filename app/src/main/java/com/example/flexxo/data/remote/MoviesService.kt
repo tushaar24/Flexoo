@@ -28,4 +28,14 @@ interface MoviesService {
         @Query("api_key") apiKey: String,
         @Query("query") query: String
     ): Movies
+
+    @GET("/3/movie/latest")
+    suspend fun getLatestMovies(
+        @Query("api_key") apiKey: String
+    ): Movies
+
+    @GET("/3/movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query("api_key") apiKey: String
+    ): Movies
 }

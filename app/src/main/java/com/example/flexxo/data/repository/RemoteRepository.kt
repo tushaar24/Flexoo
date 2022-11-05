@@ -22,4 +22,12 @@ class RemoteRepository {
     suspend fun searchMovies(api_key: String, query: String): Movies {
         return movieService.searchMovie(api_key, query)
     }
+
+    suspend fun getLatestMovies(api_key: String): Movies{
+        return movieService.getLatestMovies(api_key)
+    }
+
+    suspend fun getNowPlayingMovies(api_key: String): Movies{
+        return movieService.getNowPlayingMovies(api_key)
+    }
 }
