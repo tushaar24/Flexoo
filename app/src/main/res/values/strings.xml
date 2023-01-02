@@ -16,4 +16,7 @@
     <string name="average_rating_title">Average Rating:</string>
     <string name="movie_detail_average_rating_title">Average Rating</string>
     <string name="search_results_title">Search Results:</string>
+    <string name="homescreen_title_home">Home</string>
+    <string name="homescreen_latest_movie_title">Latest Movies</string>
+    <string name="homescreen_top_rated_movies_title">Top Rates Movies</string>
 </resources>

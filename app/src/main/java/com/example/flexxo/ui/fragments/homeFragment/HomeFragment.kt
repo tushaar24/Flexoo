@@ -138,7 +138,7 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter(): MoviesAdapter {
         val onMovieItemClicked = getOnMovieItemClicked()
-        val mAdapter = MoviesAdapter(onMovieItemClicked, requireContext())
+        val mAdapter = MoviesAdapter(onMovieItemClicked, requireContext(), false)
         mAdapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         mAdapter.setLastPositionToMinusOne()

@@ -14,6 +14,13 @@
         <entry key="..\:/Users/paltu/AndroidStudioProjects/Flexxo/app/src/main/res/layout/fragment_movie_detail.xml" value="0.14" />
         <entry key="..\:/Users/paltu/AndroidStudioProjects/Flexxo/app/src/main/res/layout/fragment_search_movies.xml" value="0.18" />
         <entry key="..\:/Users/paltu/AndroidStudioProjects/Flexxo/app/src/main/res/layout/item_movie.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/bg_searchview.xml" value="0.115" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_home_v2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_home_v3.xml" value="0.13697916666666668" />
+        <entry key="app/src/main/res/layout/item_movie.xml" value="0.5351359049479167" />
+        <entry key="app/src/main/res/layout/item_movie_v2.xml" value="0.14957264957264957" />
       </map>
     </option>
   </component>
