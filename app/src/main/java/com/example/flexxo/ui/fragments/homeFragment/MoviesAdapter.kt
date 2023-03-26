@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
 class MoviesAdapter(
     private val onClick: (Movie) -> Unit,
     private val mContext: Context,
-    private val type: Boolean
+    private val type: Boolean,
 ) : PagingDataAdapter<Movie, RecyclerView.ViewHolder>(DiffUtil) {
 
     private var lastPosition = -1
@@ -42,6 +42,7 @@ class MoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d("oxoxtushar", "onBindCalled")
         val currentData = getItem(position)
         currentData?.let {
             Log.d("oxoxtushar", "data is here")
@@ -107,7 +108,7 @@ class MoviesAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             movie: Movie,
-            onClick: (Movie) -> Unit
+            onClick: (Movie) -> Unit,
         ){
 
             binding.tvMovieName.text = movie.original_title

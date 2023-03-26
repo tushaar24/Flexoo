@@ -11,4 +11,5 @@
     <dimen name="HeadLine6TextSize">@dimen/sp_18</dimen>
     <dimen name="Body2TextSize">@dimen/sp_12</dimen>
     <dimen name="Body1TextSize">@dimen/sp_14</dimen>
+    <dimen name="itemsetOff">16dp</dimen>
 </resources>

@@ -27,6 +27,9 @@
             app:argType="com.example.flexxo.data.models.Movie"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_movieViewAllFragment"
+            app:destination="@id/movieViewAllFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchMoviesFragment"
@@ -47,6 +50,24 @@
             app:destination="@id/searchMoviesFragment" />
         <action
             android:id="@+id/action_homeFragmentV22_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragmentV22_to_movieViewAllFragment"
+            app:destination="@id/movieViewAllFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieViewAllFragment"
+        android:name="com.example.flexxo.ui.fragments.movieViewAll.MovieViewAllFragment"
+        android:label="fragment_movie_view_all"
+        tools:layout="@layout/fragment_movie_view_all" >
+        <action
+            android:id="@+id/action_movieViewAllFragment_to_homeFragmentV22"
+            app:destination="@id/homeFragmentV22" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_movieViewAllFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
     </fragment>
 </navigation>

@@ -19,4 +19,5 @@
     <string name="homescreen_title_home">Home</string>
     <string name="homescreen_latest_movie_title">Latest Movies</string>
     <string name="homescreen_top_rated_movies_title">Top Rates Movies</string>
+    <string name="homescreen_upcoming_movies_title">Upcoming Movies</string>
 </resources>

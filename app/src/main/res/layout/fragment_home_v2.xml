@@ -8,6 +8,7 @@
     tools:context=".ui.fragments.homeFragment.HomeFragmentV2">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="28dp"
             android:src="@drawable/ic_home_menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -78,6 +79,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivSearch" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLatestMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvLatestMovies"
+            app:layout_constraintTop_toBottomOf="@id/tvLatestMovies"
+            app:shimmer_repeat_mode="restart"
+            app:shimmer_shape="radial">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvLatestMovies"
             android:layout_width="0dp"
@@ -99,7 +132,39 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvLatestMovies" />
+            app:layout_constraintTop_toBottomOf="@id/shimmerLatestMovies" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerTopMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvTopRatedMovies"
+            app:layout_constraintTop_toBottomOf="@id/tvTopRatedMovies"
+            app:shimmer_repeat_mode="restart"
+            app:shimmer_shape="radial">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTopRatedMovies"
@@ -119,11 +184,43 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="@string/homescreen_latest_movie_title"
+            android:text="@string/homescreen_upcoming_movies_title"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvTopRatedMovies" />
+            app:layout_constraintTop_toBottomOf="@id/shimmerTopMovies" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerUpComingMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvUpComingMovies"
+            app:layout_constraintTop_toBottomOf="@id/tvUpComingMovies"
+            app:shimmer_repeat_mode="restart"
+            app:shimmer_shape="radial">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+
+                <include layout="@layout/item_movie_placeholder" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvUpComingMovies"
