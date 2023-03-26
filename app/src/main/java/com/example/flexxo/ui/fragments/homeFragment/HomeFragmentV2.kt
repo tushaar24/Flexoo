@@ -75,6 +75,16 @@ class HomeFragmentV2 : Fragment() {
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfPopularMovies, requireContext(), "latest", getOnViewMoreClicked())
             binding.shimmerLatestMovies.stopShimmer()
             binding.shimmerLatestMovies.visibility = View.GONE
+            TransitionManager.beginDelayedTransition(binding.clRoot)
+            val constrainSet = ConstraintSet()
+            constrainSet.clone(binding.clRoot)
+            constrainSet.connect(
+                binding.tvTopRatedMovies.id,
+                ConstraintSet.TOP,
+                binding.rvLatestMovies.id,
+                ConstraintSet.BOTTOM
+            )
+            constrainSet.applyTo(binding.clRoot)
         }
 
         mViewModel.first15TopRatedMovies.observe(requireActivity()) { movies ->
@@ -88,9 +98,9 @@ class HomeFragmentV2 : Fragment() {
             val constrainSet = ConstraintSet()
             constrainSet.clone(binding.clRoot)
             constrainSet.connect(
-                binding.tvTopRatedMovies.id,
+                binding.tvUpComingMovies.id,
                 ConstraintSet.TOP,
-                binding.rvLatestMovies.id,
+                binding.rvTopRatedMovies.id,
                 ConstraintSet.BOTTOM
             )
             constrainSet.applyTo(binding.clRoot)
@@ -103,16 +113,6 @@ class HomeFragmentV2 : Fragment() {
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfUpComingMovies, requireContext(), "upcoming", getOnViewMoreClicked())
             binding.shimmerUpComingMovies.stopShimmer()
             binding.shimmerUpComingMovies.visibility = View.GONE
-            TransitionManager.beginDelayedTransition(binding.clRoot)
-            val constrainSet = ConstraintSet()
-            constrainSet.clone(binding.clRoot)
-            constrainSet.connect(
-                binding.tvUpComingMovies.id,
-                ConstraintSet.TOP,
-                binding.rvTopRatedMovies.id,
-                ConstraintSet.BOTTOM
-            )
-            constrainSet.applyTo(binding.clRoot)
         }
     }
 
