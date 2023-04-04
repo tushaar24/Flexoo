@@ -7,8 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.flexxo.data.models.Movie
-import com.example.flexxo.data.models.Movies
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.data.paging.PopularMoviesPagingSource
 import com.example.flexxo.data.paging.TopRatedMoviesPagingSource
 import com.example.flexxo.data.paging.UpComingPagingSource
@@ -20,26 +19,26 @@ import kotlinx.coroutines.launch
 class HomeFragmentViewModel : ViewModel() {
 
     private val repository = Repository()
-    private val _first15TopRatedMovies = MutableLiveData<Movies>()
-    private val _first15PopularMovies = MutableLiveData<Movies>()
-    private val _first15UpComingMovies = MutableLiveData<Movies>()
+    private val _first15TopRatedMovies = MutableLiveData<List<MovieDetails>>()
+    private val _first15PopularMovies = MutableLiveData<List<MovieDetails>>()
+    private val _first15UpComingMovies = MutableLiveData<List<MovieDetails>>()
     val first15TopRatedMovies get() = _first15TopRatedMovies
     val first15PopularMovies get() = _first15PopularMovies
     val first15UpcomingMovies get() = _first15UpComingMovies
 
-    fun getTopRatedMovies(): Flow<PagingData<Movie>> = Pager(
+    fun getTopRatedMovies(): Flow<PagingData<MovieDetails>> = Pager(
         config = PagingConfig(100)
     ) {
         TopRatedMoviesPagingSource(repository.remoteRepository)
     }.flow.cachedIn(viewModelScope)
 
-    fun getPopularMovies(): Flow<PagingData<Movie>> = Pager(
+    fun getPopularMovies(): Flow<PagingData<MovieDetails>> = Pager(
         config = PagingConfig(100)
     ) {
         PopularMoviesPagingSource(repository.remoteRepository)
     }.flow.cachedIn(viewModelScope)
 
-    fun getUpComingMovies(): Flow<PagingData<Movie>> = Pager(
+    fun getUpComingMovies(): Flow<PagingData<MovieDetails>> = Pager(
         config = PagingConfig(100)
     ) {
         UpComingPagingSource(repository.remoteRepository)

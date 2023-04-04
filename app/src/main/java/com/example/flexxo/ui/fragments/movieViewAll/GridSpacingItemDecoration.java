@@ -1,9 +1,6 @@
 package com.example.flexxo.ui.fragments.movieViewAll;
 
-import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.DimenRes;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;

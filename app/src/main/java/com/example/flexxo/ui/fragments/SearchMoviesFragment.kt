@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.FragmentSearchMoviesBinding
 import com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesAdapter
 import com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesViewModel
@@ -44,7 +44,7 @@ class SearchMoviesFragment : Fragment() {
                     savedQuery = query
                 }
                 searchMoviesViewModel.movieList.observe(requireActivity()) {
-                    mAdapter.setData(it.results)
+                    mAdapter.setData(it)
                     binding.progressBar.visibility = View.GONE
                 }
 
@@ -58,7 +58,7 @@ class SearchMoviesFragment : Fragment() {
                     savedQuery = query
                 }
                 searchMoviesViewModel.movieList.observe(requireActivity()) {
-                    mAdapter.setData(it.results)
+                    mAdapter.setData(it)
                     binding.progressBar.visibility = View.GONE
                 }
 
@@ -69,12 +69,11 @@ class SearchMoviesFragment : Fragment() {
 
     private fun setUpRecyclerView() {
 
-        val onClick: (Movie) -> Unit = {
+        val onClick: (MovieDetails) -> Unit = {
             val bundle = Bundle()
             bundle.putSerializable("movieDetails", it)
-            val direction =
-                SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment()
-                    .setMovieDetails(it)
+            val direction = SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment()
+                .setMovieDetails(it)
             findNavController().navigate(direction)
         }
 
@@ -94,7 +93,7 @@ class SearchMoviesFragment : Fragment() {
 
         searchMoviesViewModel.searchMovies(savedQuery)
         searchMoviesViewModel.movieList.observe(requireActivity()) {
-            mAdapter.setData(it.results)
+            mAdapter.setData(it)
             binding.progressBar.visibility = View.GONE
         }
 

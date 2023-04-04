@@ -10,17 +10,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieBinding
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants.IMAGE_POST_BASE_URL
 import com.squareup.picasso.Picasso
 
 class MoviesAdapter(
-    private val onClick: (Movie) -> Unit,
+    private val onClick: (MovieDetails) -> Unit,
     private val mContext: Context,
     private val type: Boolean,
-) : PagingDataAdapter<Movie, RecyclerView.ViewHolder>(DiffUtil) {
+) : PagingDataAdapter<MovieDetails, RecyclerView.ViewHolder>(DiffUtil) {
 
     private var lastPosition = -1
     val isDataSet: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -75,14 +75,14 @@ class MoviesAdapter(
     class MoviesViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movie: Movie,
-            onClick: (Movie) -> Unit
+            movieDetails: MovieDetails,
+            onClick: (MovieDetails) -> Unit
         ) {
-            binding.tvMovieName.text = movie.title
-            binding.tvReleaseDate.text = movie.release_date
-            binding.tvAverageRating.text = movie.vote_average.toString()
+            binding.tvMovieName.text = movieDetails.title
+            binding.tvReleaseDate.text = movieDetails.release_date
+            binding.tvAverageRating.text = movieDetails.vote_average.toString()
 
-            val imageUrl = IMAGE_POST_BASE_URL + movie.poster_path
+            val imageUrl = IMAGE_POST_BASE_URL + movieDetails.poster_path
 
             Picasso.get()
                 .load(imageUrl)
@@ -90,7 +90,7 @@ class MoviesAdapter(
                 .into(binding.ivMovieImage)
 
             binding.root.setOnClickListener {
-                onClick(movie)
+                onClick(movieDetails)
             }
         }
 
@@ -107,13 +107,13 @@ class MoviesAdapter(
     class MovieViewHolder2(private val binding: ItemMovieV2Binding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movie: Movie,
-            onClick: (Movie) -> Unit,
+            movieDetails: MovieDetails,
+            onClick: (MovieDetails) -> Unit,
         ){
 
-            binding.tvMovieName.text = movie.original_title
+            binding.tvMovieName.text = movieDetails.original_title
 
-            val imageUrl = IMAGE_POST_BASE_URL + movie.poster_path
+            val imageUrl = IMAGE_POST_BASE_URL + movieDetails.poster_path
 
             Picasso.get()
                 .load(imageUrl)
@@ -121,7 +121,7 @@ class MoviesAdapter(
                 .into(binding.ivMovie)
 
             binding.root.setOnClickListener {
-                onClick(movie)
+                onClick(movieDetails)
             }
         }
 
@@ -134,12 +134,12 @@ class MoviesAdapter(
         }
     }
 
-    object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Movie>() {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+    object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<MovieDetails>() {
+        override fun areItemsTheSame(oldItem: MovieDetails, newItem: MovieDetails): Boolean {
             return false
         }
 
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        override fun areContentsTheSame(oldItem: MovieDetails, newItem: MovieDetails): Boolean {
             return false
         }
 

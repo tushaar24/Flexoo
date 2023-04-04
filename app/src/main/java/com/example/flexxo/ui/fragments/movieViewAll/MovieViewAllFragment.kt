@@ -13,9 +13,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.FragmentMovieViewAllBinding
-import com.example.flexxo.ui.fragments.homeFragment.HomeFragmentV2Directions
 import com.example.flexxo.ui.fragments.homeFragment.HomeMoviesAdapter
 import com.example.flexxo.ui.fragments.homeFragment.MoviesAdapter
 import com.example.flexxo.utils.Constants
@@ -89,7 +88,7 @@ class MovieViewAllFragment : Fragment() {
 //            val itemSetDecorator = ItemOffsetDecoration(requireContext(), R.dimen.itemsetOff)
             val layoutManager = GridLayoutManager(requireContext(), 3)
             binding.rvMovies.layoutManager = layoutManager
-            binding.rvMovies.adapter = HomeMoviesAdapter(getOnMovieItemClicked(), it.results, requireContext())
+            binding.rvMovies.adapter = HomeMoviesAdapter(getOnMovieItemClicked(), it, requireContext())
             binding.rvMovies.addItemDecoration(GridSpacingItemDecoration(3, 16, false))
         }
     }
@@ -99,8 +98,8 @@ class MovieViewAllFragment : Fragment() {
         _binding = null
     }
 
-    private fun getOnMovieItemClicked(): (Movie) -> Unit {
-        val onMovieItemClicked: (Movie) -> Unit = { movie ->
+    private fun getOnMovieItemClicked(): (MovieDetails) -> Unit {
+        val onMovieItemClicked: (MovieDetails) -> Unit = { movie ->
             val bundle = Bundle()
             bundle.putSerializable(Constants.MOVIE_DETAILS, movie)
             val direction =

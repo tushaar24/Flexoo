@@ -8,14 +8,14 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants
 import com.squareup.picasso.Picasso
 
 class HomeMoviesAdapter(
-    private val onClick: (Movie) -> Unit,
-    private val listOfMovies: List<Movie>,
+    private val onClick: (MovieDetails) -> Unit,
+    private val listOfMovieDetails: List<MovieDetails>,
     private val mContext: Context,
     private val type: String = "",
     private val onViewMoreClicked: (String) -> Unit = {}
@@ -27,8 +27,8 @@ class HomeMoviesAdapter(
     class HomeMoviesViewHolder(private val binding: ItemMovieV2Binding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movie: Movie,
-            onClick: (Movie) -> Unit,
+            movieDetails: MovieDetails,
+            onClick: (MovieDetails) -> Unit,
             position: Int,
             mContext: Context,
             type: String,
@@ -40,9 +40,9 @@ class HomeMoviesAdapter(
                 binding.tvShowViewMore.visibility = View.GONE
 
                 binding.clRootView.setBackgroundColor(mContext.resources.getColor(R.color.color_primary))
-                binding.tvMovieName.text = movie.original_title
+                binding.tvMovieName.text = movieDetails.original_title
 
-                val imageUrl = Constants.IMAGE_POST_BASE_URL + movie.poster_path
+                val imageUrl = Constants.IMAGE_POST_BASE_URL + movieDetails.poster_path
 
                 Picasso.get()
                     .load(imageUrl)
@@ -50,7 +50,7 @@ class HomeMoviesAdapter(
                     .into(binding.ivMovie)
 
                 binding.root.setOnClickListener {
-                    onClick(movie)
+                    onClick(movieDetails)
                 }
 
             } else {
@@ -83,11 +83,11 @@ class HomeMoviesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return listOfMovies.size
+        return listOfMovieDetails.size
     }
 
     override fun onBindViewHolder(holder: HomeMoviesViewHolder, position: Int) {
-        val currentMovie = listOfMovies[position]
+        val currentMovie = listOfMovieDetails[position]
         holder.bind(currentMovie, onClick, position, mContext, type, onViewMoreClicked)
         setAnimations(holder.itemView, position)
     }

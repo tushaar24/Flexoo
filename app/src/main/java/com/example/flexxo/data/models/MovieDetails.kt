@@ -2,7 +2,7 @@ package com.example.flexxo.data.models
 
 import java.io.Serializable
 
-data class Movie(
+data class MovieDetails(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,

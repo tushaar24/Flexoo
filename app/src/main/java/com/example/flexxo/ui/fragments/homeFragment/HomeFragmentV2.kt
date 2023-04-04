@@ -1,24 +1,18 @@
 package com.example.flexxo.ui.fragments.homeFragment
 
-import android.icu.lang.UCharacter.IndicPositionalCategory.BOTTOM
-import android.icu.lang.UCharacter.IndicPositionalCategory.TOP
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.FragmentHomeV2Binding
 import com.example.flexxo.utils.Constants
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 class HomeFragmentV2 : Fragment() {
@@ -69,10 +63,10 @@ class HomeFragmentV2 : Fragment() {
 
     private fun setObservers() {
         mViewModel.first15PopularMovies.observe(requireActivity()) { movies ->
-            val listOfPopularMovies = mutableListOf<Movie>()
-            listOfPopularMovies.addAll(movies.results.subList(0, 16))
+            val listOfPopularMovieDetails = mutableListOf<MovieDetails>()
+            listOfPopularMovieDetails.addAll(movies.subList(0, 16))
             binding.rvLatestMovies.adapter =
-                HomeMoviesAdapter(getOnMovieItemClicked(), listOfPopularMovies, requireContext(), "latest", getOnViewMoreClicked())
+                HomeMoviesAdapter(getOnMovieItemClicked(), listOfPopularMovieDetails, requireContext(), "latest", getOnViewMoreClicked())
             binding.shimmerLatestMovies.stopShimmer()
             binding.shimmerLatestMovies.visibility = View.GONE
             TransitionManager.beginDelayedTransition(binding.clRoot)
@@ -88,10 +82,10 @@ class HomeFragmentV2 : Fragment() {
         }
 
         mViewModel.first15TopRatedMovies.observe(requireActivity()) { movies ->
-            val listOfTopRatedMovies = mutableListOf<Movie>()
-            listOfTopRatedMovies.addAll(movies.results.subList(0, 16))
+            val listOfTopRatedMovieDetails = mutableListOf<MovieDetails>()
+            listOfTopRatedMovieDetails.addAll(movies.subList(0, 16))
             binding.rvTopRatedMovies.adapter =
-                HomeMoviesAdapter(getOnMovieItemClicked(), listOfTopRatedMovies, requireContext(), "top rated", getOnViewMoreClicked())
+                HomeMoviesAdapter(getOnMovieItemClicked(), listOfTopRatedMovieDetails, requireContext(), "top rated", getOnViewMoreClicked())
             binding.shimmerTopMovies.stopShimmer()
             binding.shimmerTopMovies.visibility = View.GONE
             TransitionManager.beginDelayedTransition(binding.clRoot)
@@ -107,10 +101,10 @@ class HomeFragmentV2 : Fragment() {
         }
 
         mViewModel.first15UpcomingMovies.observe(requireActivity()) { movies ->
-            val listOfUpComingMovies = mutableListOf<Movie>()
-            listOfUpComingMovies.addAll(movies.results.subList(0, 16))
+            val listOfUpComingMovieDetails = mutableListOf<MovieDetails>()
+            listOfUpComingMovieDetails.addAll(movies.subList(0, 16))
             binding.rvUpComingMovies.adapter =
-                HomeMoviesAdapter(getOnMovieItemClicked(), listOfUpComingMovies, requireContext(), "upcoming", getOnViewMoreClicked())
+                HomeMoviesAdapter(getOnMovieItemClicked(), listOfUpComingMovieDetails, requireContext(), "upcoming", getOnViewMoreClicked())
             binding.shimmerUpComingMovies.stopShimmer()
             binding.shimmerUpComingMovies.visibility = View.GONE
         }
@@ -122,8 +116,8 @@ class HomeFragmentV2 : Fragment() {
     }
 
 
-    private fun getOnMovieItemClicked(): (Movie) -> Unit {
-        val onMovieItemClicked: (Movie) -> Unit = { movie ->
+    private fun getOnMovieItemClicked(): (MovieDetails) -> Unit {
+        val onMovieItemClicked: (MovieDetails) -> Unit = { movie ->
             val bundle = Bundle()
             bundle.putSerializable(Constants.MOVIE_DETAILS, movie)
             val direction =

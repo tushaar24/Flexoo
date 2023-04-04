@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.Movie
+import com.example.flexxo.data.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieBinding
 import com.example.flexxo.utils.Constants
 import com.squareup.picasso.Picasso
 
 class SearchMoviesAdapter(
     private val mContext: Context,
-    private val onClick: (Movie) -> Unit,
+    private val onClick: (MovieDetails) -> Unit,
 ) : RecyclerView.Adapter<SearchMoviesAdapter.SearchMoviesViewHolder>() {
 
-    private var movieList: MutableList<Movie> = mutableListOf()
+    private var movieDetailsList: MutableList<MovieDetails> = mutableListOf()
     private var lastPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchMoviesViewHolder {
@@ -25,7 +25,7 @@ class SearchMoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchMoviesViewHolder, position: Int) {
-        val currentData = movieList[position]
+        val currentData = movieDetailsList[position]
         currentData.let {
             holder.bind(it, onClick)
         }
@@ -43,14 +43,14 @@ class SearchMoviesAdapter(
     class SearchMoviesViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            movie: Movie,
-            onClick: (Movie) -> Unit
+            movieDetails: MovieDetails,
+            onClick: (MovieDetails) -> Unit
         ) {
-            binding.tvMovieName.text = movie.title
-            binding.tvReleaseDate.text = movie.release_date
-            binding.tvAverageRating.text = movie.vote_average.toString()
+            binding.tvMovieName.text = movieDetails.title
+            binding.tvReleaseDate.text = movieDetails.release_date
+            binding.tvAverageRating.text = movieDetails.vote_average.toString()
 
-            val imageUrl = Constants.IMAGE_POST_BASE_URL + movie.poster_path
+            val imageUrl = Constants.IMAGE_POST_BASE_URL + movieDetails.poster_path
 
             Picasso.get()
                 .load(imageUrl)
@@ -58,7 +58,7 @@ class SearchMoviesAdapter(
                 .into(binding.ivMovieImage)
 
             binding.root.setOnClickListener {
-                onClick(movie)
+                onClick(movieDetails)
             }
         }
 
@@ -72,12 +72,12 @@ class SearchMoviesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return movieList.size
+        return movieDetailsList.size
     }
 
-    fun setData(newMovieList: List<Movie>) {
-        movieList.clear()
-        movieList.addAll(newMovieList)
+    fun setData(newMovieListDetails: List<MovieDetails>) {
+        movieDetailsList.clear()
+        movieDetailsList.addAll(newMovieListDetails)
         notifyDataSetChanged()
     }
 }
