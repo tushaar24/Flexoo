@@ -1,7 +1,6 @@
 package com.example.flexxo.ui.fragments.homeFragment
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.MovieDetails
+import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieBinding
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants.IMAGE_POST_BASE_URL
@@ -42,10 +41,8 @@ class MoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("oxoxtushar", "onBindCalled")
         val currentData = getItem(position)
         currentData?.let {
-            Log.d("oxoxtushar", "data is here")
             when(holder.itemViewType){
                 1 -> (holder as MovieViewHolder2).bind(it, onClick)
                 0 -> (holder as MoviesViewHolder).bind(it, onClick)

@@ -1,0 +1,52 @@
+package com.example.flexxo.data.common.repository
+
+import com.example.flexxo.data.common.models.Movies
+import com.example.flexxo.domain.repository.Repository
+import com.example.flexxo.domain.sources.remote.RemoteDataSource
+import com.example.flexxo.utils.NetworkResult
+import javax.inject.Inject
+
+class RepositoryImpl @Inject constructor(
+    private val remoteDataSource: RemoteDataSource
+) : Repository {
+
+    override suspend fun getTopRatedMovies(
+        apiKey: String,
+        page: Int
+    ): NetworkResult<Movies> {
+        return remoteDataSource.getTopRatedMovies(
+            apiKey,
+            page
+        )
+    }
+
+    override suspend fun getUpComingMovies(
+        apiKey: String,
+        page: Int
+    ): NetworkResult<Movies> {
+        return remoteDataSource.getUpComingMovies(
+            apiKey,
+            page
+        )
+    }
+
+    override suspend fun getPopularMovies(
+        apiKey: String,
+        page: Int
+    ): NetworkResult<Movies> {
+        return remoteDataSource.getPopularMovies(
+            apiKey,
+            page
+        )
+    }
+
+    override suspend fun searchMovies(
+        apiKey: String,
+        movieQuery: String
+    ): NetworkResult<Movies> {
+        return remoteDataSource.searchMovies(
+            apiKey,
+            movieQuery
+        )
+    }
+}

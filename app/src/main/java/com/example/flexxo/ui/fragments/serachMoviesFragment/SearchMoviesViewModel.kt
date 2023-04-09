@@ -3,34 +3,36 @@ package com.example.flexxo.ui.fragments.serachMoviesFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.flexxo.data.models.MovieDetails
-import com.example.flexxo.data.repository.RemoteRepository
+import com.example.flexxo.data.common.models.Movies
+import com.example.flexxo.domain.repository.Repository
 import com.example.flexxo.utils.Constants.API_KEY
+import com.example.flexxo.utils.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchMoviesViewModel : ViewModel() {
+@HiltViewModel
+class SearchMoviesViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
-    private val remoteRepository = RemoteRepository()
-
-    private var _movieList: MutableLiveData<List<MovieDetails>> = MutableLiveData()
+    private var _movieList: MutableLiveData<Movies> = MutableLiveData()
     val movieList get() = _movieList
-
-    private var _isListIsEmpty: MutableLiveData<Boolean> = MutableLiveData()
-    val isListIsEmpty get() = _isListIsEmpty
 
     fun searchMovies(query: String) {
         viewModelScope.launch {
             try {
-                _movieList.postValue(remoteRepository.searchMovies(API_KEY, query))
-                if (_movieList.value != null) {
-                    if (_movieList.value != null) {
-                        if (_movieList.value!!.isEmpty()) {
-                            _isListIsEmpty.postValue(true)
-                        }
+                val result = repository.searchMovies(API_KEY, query)
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _movieList.postValue(result!!.data!!)
+                    }
+
+                    else -> {
                     }
                 }
+
             } catch (e: Exception) {
-                _isListIsEmpty.postValue(true)
             }
         }
     }

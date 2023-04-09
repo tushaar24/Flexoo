@@ -1,4 +1,4 @@
-package com.example.flexxo.data.models
+package com.example.flexxo.data.common.models
 
 import java.io.Serializable
 

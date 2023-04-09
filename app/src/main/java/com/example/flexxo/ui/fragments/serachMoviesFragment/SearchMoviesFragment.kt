@@ -1,4 +1,4 @@
-package com.example.flexxo.ui.fragments
+package com.example.flexxo.ui.fragments.serachMoviesFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.flexxo.data.models.MovieDetails
+import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentSearchMoviesBinding
-import com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesAdapter
-import com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesViewModel
 
 class SearchMoviesFragment : Fragment() {
 
     private var _binding: FragmentSearchMoviesBinding? = null
     private val binding get() = _binding!!
     private lateinit var mAdapter: SearchMoviesAdapter
-    private val searchMoviesViewModel: SearchMoviesViewModel by viewModels()
+    private lateinit var searchMoviesViewModel: SearchMoviesViewModel
     private var savedQuery: String = ""
 
     override fun onCreateView(
@@ -29,6 +27,8 @@ class SearchMoviesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSearchMoviesBinding.inflate(inflater, container, false)
+        searchMoviesViewModel =
+            ViewModelProvider(requireActivity()).get(SearchMoviesViewModel::class.java)
         return binding.root
     }
 
@@ -37,6 +37,7 @@ class SearchMoviesFragment : Fragment() {
         setUpRecyclerView()
 
         binding.svMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
                     searchMoviesViewModel.searchMovies(query)
@@ -44,7 +45,7 @@ class SearchMoviesFragment : Fragment() {
                     savedQuery = query
                 }
                 searchMoviesViewModel.movieList.observe(requireActivity()) {
-                    mAdapter.setData(it)
+                    mAdapter.setData(it.results)
                     binding.progressBar.visibility = View.GONE
                 }
 
@@ -58,7 +59,7 @@ class SearchMoviesFragment : Fragment() {
                     savedQuery = query
                 }
                 searchMoviesViewModel.movieList.observe(requireActivity()) {
-                    mAdapter.setData(it)
+                    mAdapter.setData(it.results)
                     binding.progressBar.visibility = View.GONE
                 }
 
@@ -72,8 +73,10 @@ class SearchMoviesFragment : Fragment() {
         val onClick: (MovieDetails) -> Unit = {
             val bundle = Bundle()
             bundle.putSerializable("movieDetails", it)
-            val direction = SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment()
-                .setMovieDetails(it)
+            val direction =
+                SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment(
+                    it
+                )
             findNavController().navigate(direction)
         }
 
@@ -93,13 +96,8 @@ class SearchMoviesFragment : Fragment() {
 
         searchMoviesViewModel.searchMovies(savedQuery)
         searchMoviesViewModel.movieList.observe(requireActivity()) {
-            mAdapter.setData(it)
+            mAdapter.setData(it.results)
             binding.progressBar.visibility = View.GONE
-        }
-
-        searchMoviesViewModel.isListIsEmpty.observe(requireActivity()) {
-            binding.progressBar.visibility = View.GONE
-            mAdapter.setData(emptyList())
         }
     }
 

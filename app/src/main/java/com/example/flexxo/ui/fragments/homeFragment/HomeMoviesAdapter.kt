@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
-import com.example.flexxo.data.models.MovieDetails
+import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants
 import com.squareup.picasso.Picasso

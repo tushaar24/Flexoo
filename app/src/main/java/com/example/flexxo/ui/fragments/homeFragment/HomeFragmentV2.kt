@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.flexxo.data.models.MovieDetails
+import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentHomeV2Binding
 import com.example.flexxo.utils.Constants
 
@@ -19,13 +19,14 @@ class HomeFragmentV2 : Fragment() {
 
     private var _binding: FragmentHomeV2Binding? = null
     private val binding get() = _binding!!
-    private val mViewModel: HomeFragmentViewModel by viewModels()
+    private lateinit var mViewModel: HomeFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeV2Binding.inflate(inflater, container, false)
+        mViewModel = ViewModelProvider(requireActivity())[HomeFragmentViewModel::class.java]
         return binding.root
     }
 
@@ -45,10 +46,6 @@ class HomeFragmentV2 : Fragment() {
         binding.rvLatestMovies.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-//        getPopularMovies()
-//        getTopRatedMovies()
-//        getUpComingMovies()
-
         mViewModel.getFirst15PopularMovies()
         mViewModel.getFirst15TopRatedMovies()
         mViewModel.getFirst15UpcomingMovies()
@@ -64,7 +61,7 @@ class HomeFragmentV2 : Fragment() {
     private fun setObservers() {
         mViewModel.first15PopularMovies.observe(requireActivity()) { movies ->
             val listOfPopularMovieDetails = mutableListOf<MovieDetails>()
-            listOfPopularMovieDetails.addAll(movies.subList(0, 16))
+            listOfPopularMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvLatestMovies.adapter =
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfPopularMovieDetails, requireContext(), "latest", getOnViewMoreClicked())
             binding.shimmerLatestMovies.stopShimmer()
@@ -83,7 +80,7 @@ class HomeFragmentV2 : Fragment() {
 
         mViewModel.first15TopRatedMovies.observe(requireActivity()) { movies ->
             val listOfTopRatedMovieDetails = mutableListOf<MovieDetails>()
-            listOfTopRatedMovieDetails.addAll(movies.subList(0, 16))
+            listOfTopRatedMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvTopRatedMovies.adapter =
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfTopRatedMovieDetails, requireContext(), "top rated", getOnViewMoreClicked())
             binding.shimmerTopMovies.stopShimmer()
@@ -102,7 +99,7 @@ class HomeFragmentV2 : Fragment() {
 
         mViewModel.first15UpcomingMovies.observe(requireActivity()) { movies ->
             val listOfUpComingMovieDetails = mutableListOf<MovieDetails>()
-            listOfUpComingMovieDetails.addAll(movies.subList(0, 16))
+            listOfUpComingMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvUpComingMovies.adapter =
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfUpComingMovieDetails, requireContext(), "upcoming", getOnViewMoreClicked())
             binding.shimmerUpComingMovies.stopShimmer()
@@ -121,8 +118,7 @@ class HomeFragmentV2 : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable(Constants.MOVIE_DETAILS, movie)
             val direction =
-                HomeFragmentV2Directions.actionHomeFragmentV22ToMovieDetailFragment()
-                    .setMovieDetails(movie)
+                HomeFragmentV2Directions.actionHomeFragmentV22ToMovieDetailFragment(movie)
             findNavController().navigate(direction)
         }
         return onMovieItemClicked

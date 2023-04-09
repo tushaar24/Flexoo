@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="40dp"
     android:paddingEnd="40dp"
-    tools:context=".ui.fragments.SearchMoviesFragment">
+    tools:context=".ui.fragments.serachMoviesFragment.SearchMoviesFragment">
 
     <SearchView
         android:id="@+id/svMovies"

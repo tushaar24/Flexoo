@@ -10,18 +10,16 @@
         android:name="com.example.flexxo.ui.fragments.movieDetailFragment.MovieDetailFragment"
         android:label="fragment_movie_detail"
         tools:layout="@layout/fragment_movie_detail" >
-        <argument
-            android:name="movieDetails"
-            app:argType="com.example.flexxo.data.models.MovieDetails"
-            app:nullable="true"
-            android:defaultValue="@null" />
         <action
             android:id="@+id/action_movieDetailFragment_to_movieViewAllFragment"
             app:destination="@id/movieViewAllFragment" />
+        <argument
+            android:name="movieDetails"
+            app:argType="com.example.flexxo.data.common.models.MovieDetails" />
     </fragment>
     <fragment
         android:id="@+id/searchMoviesFragment"
-        android:name="com.example.flexxo.ui.fragments.SearchMoviesFragment"
+        android:name="com.example.flexxo.ui.fragments.serachMoviesFragment.SearchMoviesFragment"
         android:label="fragment_search_movies"
         tools:layout="@layout/fragment_search_movies" >
         <action
