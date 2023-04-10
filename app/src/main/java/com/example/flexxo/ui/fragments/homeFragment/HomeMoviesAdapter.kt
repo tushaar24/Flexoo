@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.flexxo.R
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants
-import com.squareup.picasso.Picasso
 
 class HomeMoviesAdapter(
     private val onClick: (MovieDetails) -> Unit,
@@ -44,9 +45,10 @@ class HomeMoviesAdapter(
 
                 val imageUrl = Constants.IMAGE_POST_BASE_URL + movieDetails.poster_path
 
-                Picasso.get()
+                Glide.with(mContext)
                     .load(imageUrl)
-                    .fit()
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .thumbnail(0.5f)
                     .into(binding.ivMovie)
 
                 binding.root.setOnClickListener {

@@ -8,12 +8,13 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.flexxo.R
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.ItemMovieBinding
 import com.example.flexxo.databinding.ItemMovieV2Binding
 import com.example.flexxo.utils.Constants.IMAGE_POST_BASE_URL
-import com.squareup.picasso.Picasso
 
 class MoviesAdapter(
     private val onClick: (MovieDetails) -> Unit,
@@ -44,8 +45,8 @@ class MoviesAdapter(
         val currentData = getItem(position)
         currentData?.let {
             when(holder.itemViewType){
-                1 -> (holder as MovieViewHolder2).bind(it, onClick)
-                0 -> (holder as MoviesViewHolder).bind(it, onClick)
+                1 -> (holder as MovieViewHolder2).bind(it, onClick, mContext)
+                0 -> (holder as MoviesViewHolder).bind(it, onClick, mContext)
             }
         }
 
@@ -73,7 +74,8 @@ class MoviesAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             movieDetails: MovieDetails,
-            onClick: (MovieDetails) -> Unit
+            onClick: (MovieDetails) -> Unit,
+            mContext: Context
         ) {
             binding.tvMovieName.text = movieDetails.title
             binding.tvReleaseDate.text = movieDetails.release_date
@@ -81,9 +83,10 @@ class MoviesAdapter(
 
             val imageUrl = IMAGE_POST_BASE_URL + movieDetails.poster_path
 
-            Picasso.get()
+            Glide.with(mContext)
                 .load(imageUrl)
-                .fit()
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .thumbnail(0.5f)
                 .into(binding.ivMovieImage)
 
             binding.root.setOnClickListener {
@@ -106,15 +109,17 @@ class MoviesAdapter(
         fun bind(
             movieDetails: MovieDetails,
             onClick: (MovieDetails) -> Unit,
+            mContext: Context
         ){
 
             binding.tvMovieName.text = movieDetails.original_title
 
             val imageUrl = IMAGE_POST_BASE_URL + movieDetails.poster_path
 
-            Picasso.get()
+            Glide.with(mContext)
                 .load(imageUrl)
-                .fit()
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .thumbnail(0.5f)
                 .into(binding.ivMovie)
 
             binding.root.setOnClickListener {

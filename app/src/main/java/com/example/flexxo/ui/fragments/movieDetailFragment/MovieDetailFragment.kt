@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.flexxo.databinding.FragmentMovieDetailBinding
 import com.example.flexxo.utils.Constants.IMAGE_BACKDROP_BASE_URL
 import com.example.flexxo.utils.Constants.IMAGE_POST_BASE_URL
-import com.squareup.picasso.Picasso
 
 class MovieDetailFragment : Fragment() {
 
@@ -40,16 +41,18 @@ class MovieDetailFragment : Fragment() {
 
         val posterImageUrl = IMAGE_POST_BASE_URL + movieDetails?.poster_path
 
-        Picasso.get()
+        Glide.with(requireContext())
             .load(posterImageUrl)
-            .fit()
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .thumbnail(0.5f)
             .into(binding.ivPosterImage)
 
         val backDropImageUrl = IMAGE_BACKDROP_BASE_URL + movieDetails?.backdrop_path
 
-        Picasso.get()
+        Glide.with(requireContext())
             .load(backDropImageUrl)
-            .fit()
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .thumbnail(0.5f)
             .into(binding.ivBackImage)
     }
 
