@@ -1,5 +1,6 @@
 package com.example.flexxo.domain.sources.remote
 
+import com.example.flexxo.data.common.models.MovieCreditsEntity
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.utils.NetworkResult
 
@@ -25,5 +26,9 @@ interface RemoteDataSource {
         movieQuery: String
     ): NetworkResult<Movies>
 
+    suspend fun getMovieCredits(
+        movieId: Int,
+        apiKey: String
+    ): NetworkResult<MovieCreditsEntity>
 
 }

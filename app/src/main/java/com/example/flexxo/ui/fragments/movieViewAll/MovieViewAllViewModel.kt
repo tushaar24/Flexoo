@@ -1,5 +1,6 @@
 package com.example.flexxo.ui.fragments.movieViewAll
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,70 +26,6 @@ class MovieViewAllViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _movieList = MutableLiveData<Movies?>()
-    val movieList get() = _movieList
-
-    fun getFirst15TopRatedMovies() {
-        viewModelScope.launch {
-            val result = repository.getTopRatedMovies(
-                Constants.API_KEY,
-                1
-            )
-            when (result) {
-                is NetworkResult.Success -> {
-                    _movieList.postValue(
-                        result.data
-                    )
-                }
-
-                else -> {
-
-                }
-            }
-
-        }
-    }
-
-    fun getFirst15PopularMovies() {
-        viewModelScope.launch {
-            val result = repository.getPopularMovies(
-                Constants.API_KEY,
-                1
-            )
-            when (result) {
-                is NetworkResult.Success -> {
-                    _movieList.postValue(
-                        result.data
-                    )
-                }
-
-                else -> {
-
-                }
-            }
-        }
-    }
-
-    fun getFirst15UpcomingMovies() {
-        viewModelScope.launch {
-            val result = repository.getUpComingMovies(
-                Constants.API_KEY,
-                1
-            )
-            when (result) {
-                is NetworkResult.Success -> {
-                    _movieList.postValue(
-                        result.data
-                    )
-                }
-
-                else -> {
-
-                }
-            }
-        }
-    }
-
     fun getTopRatedMovies(): Flow<PagingData<MovieDetails>> = Pager(
         config = PagingConfig(100)
     ) {
@@ -106,4 +43,8 @@ class MovieViewAllViewModel @Inject constructor(
     ) {
         UpComingPagingSource(repository)
     }.flow.cachedIn(viewModelScope)
+
+    override fun onCleared() {
+        super.onCleared()
+    }
 }

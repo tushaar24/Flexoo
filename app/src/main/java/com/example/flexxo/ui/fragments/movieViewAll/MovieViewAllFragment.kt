@@ -82,14 +82,6 @@ class MovieViewAllFragment : Fragment() {
                 binding.tvTitle.text = requireContext().getString(R.string.homescreen_upcoming_movies_title)
             }
         }
-
-        mViewModel.movieList.observe(requireActivity()){
-//            val itemSetDecorator = ItemOffsetDecoration(requireContext(), R.dimen.itemsetOff)
-            val layoutManager = GridLayoutManager(requireContext(), 3)
-            binding.rvMovies.layoutManager = layoutManager
-            binding.rvMovies.adapter = HomeMoviesAdapter(getOnMovieItemClicked(), it!!.results, requireContext())
-            binding.rvMovies.addItemDecoration(GridSpacingItemDecoration(3, 16, false))
-        }
     }
 
     override fun onDestroyView() {

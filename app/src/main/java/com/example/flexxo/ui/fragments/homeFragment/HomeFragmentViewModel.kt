@@ -1,5 +1,6 @@
 package com.example.flexxo.ui.fragments.homeFragment
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -66,5 +67,9 @@ class HomeFragmentViewModel @Inject constructor(
             }
 
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

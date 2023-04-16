@@ -1,5 +1,6 @@
 package com.example.flexxo.ui.fragments.serachMoviesFragment
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,11 @@ import javax.inject.Inject
 class SearchMoviesViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
+
+
+    init {
+        Log.d("oxoxtushar", "created")
+    }
 
     private var _movieList: MutableLiveData<Movies> = MutableLiveData()
     val movieList get() = _movieList
@@ -35,5 +41,9 @@ class SearchMoviesViewModel @Inject constructor(
             } catch (e: Exception) {
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

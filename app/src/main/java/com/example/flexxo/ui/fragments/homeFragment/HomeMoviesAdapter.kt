@@ -1,6 +1,7 @@
 package com.example.flexxo.ui.fragments.homeFragment
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class HomeMoviesAdapter(
 ) : RecyclerView.Adapter<HomeMoviesAdapter.HomeMoviesViewHolder>() {
 
     private var lastPosition = -1
+    private var count = 0
 
     class HomeMoviesViewHolder(private val binding: ItemMovieV2Binding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -81,6 +83,7 @@ class HomeMoviesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMoviesViewHolder {
+        count++
         return HomeMoviesViewHolder.from(parent)
     }
 
@@ -105,4 +108,6 @@ class HomeMoviesAdapter(
     fun setLastPositionToMinusOne() {
         lastPosition = -1
     }
+
+
 }

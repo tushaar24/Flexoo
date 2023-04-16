@@ -74,30 +74,20 @@
             android:paddingBottom="16dp">
 
             <TextView
-                android:id="@+id/tvAboutMoviesTitle"
+                android:id="@+id/tvOverviewTitle"
                 style="@style/FindYourMovieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:text="@string/about_movies_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvOverviewTitle"
-                style="@style/OverViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="25dp"
                 android:text="@string/overview_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvAboutMoviesTitle" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvOverview"
                 style="@style/OverViewText"
                 android:layout_width="0dp"
+                android:fontFamily="@font/poppins_semibold"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="4dp"
@@ -108,92 +98,32 @@
                 tools:text="From DC Comics comes the Suicide Squad, an antihero team of incarcerated supervillains who act as deniable assets for the United States government, undertaking high-risk black ops missions in exchange for commuted prison sentences." />
 
             <TextView
-                android:id="@+id/tvReleaseDateTitle"
-                style="@style/ReleaseDateTitle"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvCastTitle"
+                android:layout_width="0dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/cast_title"
+                android:textColor="@color/white"
+                android:textSize="18sp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/movie_detail_release_date_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
-
-            <TextView
-                android:id="@+id/tvReleaseDate"
-                style="@style/ReleaseDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvReleaseDateTitle"
-                tools:text="2019-02-23" />
-
-            <TextView
-                android:id="@+id/tvPopularityTitle"
-                style="@style/ReleaseDateTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="40dp"
-                android:text="@string/popularity_title"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="40dp"
                 app:layout_constraintTop_toBottomOf="@id/tvOverview" />
 
-            <TextView
-                android:id="@+id/tvPopularity"
-                style="@style/ReleaseDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="@id/tvPopularityTitle"
-                app:layout_constraintStart_toStartOf="@id/tvPopularityTitle"
-                app:layout_constraintTop_toBottomOf="@id/tvPopularityTitle"
-                tools:text="23421" />
-
-            <TextView
-                android:id="@+id/tvRateCountTitle"
-                style="@style/ReleaseDateTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="40dp"
-                android:text="@string/rate_count_title"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCast"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvCastTitle"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPopularity" />
-
-            <TextView
-                android:id="@+id/tvRateCount"
-                style="@style/ReleaseDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="@id/tvPopularityTitle"
-                app:layout_constraintStart_toStartOf="@id/tvPopularityTitle"
-                app:layout_constraintTop_toBottomOf="@id/tvRateCountTitle"
-                tools:text="231" />
-
-            <TextView
-                android:id="@+id/tvAverageRatingTitle"
-                style="@style/AverageRatingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/movie_detail_average_rating_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate" />
-
-            <TextView
-                android:id="@+id/tvAverageRating"
-                style="@style/AverageRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvAverageRatingTitle"
-                tools:text="8.3" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:listitem="@layout/item_cast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

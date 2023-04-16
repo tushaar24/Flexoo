@@ -81,6 +81,7 @@ class HomeFragmentV2 : Fragment() {
         mViewModel.first15TopRatedMovies.observe(requireActivity()) { movies ->
             val listOfTopRatedMovieDetails = mutableListOf<MovieDetails>()
             listOfTopRatedMovieDetails.addAll(movies!!.results.subList(0, 16))
+            binding.rvTopRatedMovies.setItemViewCacheSize(0)
             binding.rvTopRatedMovies.adapter =
                 HomeMoviesAdapter(getOnMovieItemClicked(), listOfTopRatedMovieDetails, requireContext(), "top rated", getOnViewMoreClicked())
             binding.shimmerTopMovies.stopShimmer()

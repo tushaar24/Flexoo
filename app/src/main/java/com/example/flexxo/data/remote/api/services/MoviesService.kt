@@ -1,11 +1,14 @@
 package com.example.flexxo.data.remote.api.services
 
+import com.example.flexxo.data.common.models.MovieCreditsEntity
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.utils.NetworkResult
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesService {
+
     @GET("/3/movie/upcoming")
     suspend fun getUpComingMovies(
         @Query("api_key") apiKey: String,
@@ -29,5 +32,11 @@ interface MoviesService {
         @Query("api_key") apiKey: String,
         @Query("query") query: String
     ): NetworkResult<Movies>
+
+    @GET("/3/movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): NetworkResult<MovieCreditsEntity>
 
 }

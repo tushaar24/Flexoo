@@ -1,5 +1,6 @@
 package com.example.flexxo.domain.repository
 
+import com.example.flexxo.data.common.models.MovieCreditsEntity
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.utils.NetworkResult
 
@@ -25,4 +26,8 @@ interface Repository {
         movieQuery: String
     ): NetworkResult<Movies>
 
+    suspend fun getMovieCredits(
+        movieId: Int,
+        apiKey: String
+    ): NetworkResult<MovieCreditsEntity>
 }

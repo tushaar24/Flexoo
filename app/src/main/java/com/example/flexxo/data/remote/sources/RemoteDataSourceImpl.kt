@@ -1,5 +1,6 @@
 package com.example.flexxo.data.remote.sources
 
+import com.example.flexxo.data.common.models.MovieCreditsEntity
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.data.remote.api.services.MoviesService
 import com.example.flexxo.domain.sources.remote.RemoteDataSource
@@ -50,5 +51,13 @@ class RemoteDataSourceImpl @Inject constructor(
         )
     }
 
-
+    override suspend fun getMovieCredits(
+        movieId: Int,
+        apiKey: String
+    ): NetworkResult<MovieCreditsEntity> {
+        return moviesService.getMovieCredits(
+            movieId,
+            apiKey
+        )
+    }
 }
