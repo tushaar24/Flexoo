@@ -1,6 +1,7 @@
 package com.example.flexxo.data.common.repository
 
 import com.example.flexxo.data.common.models.MovieCreditsEntity
+import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.domain.repository.Repository
 import com.example.flexxo.domain.sources.remote.RemoteDataSource
@@ -56,6 +57,30 @@ class RepositoryImpl @Inject constructor(
         apiKey: String
     ): NetworkResult<MovieCreditsEntity> {
         return remoteDataSource.getMovieCredits(
+            movieId,
+            apiKey
+        )
+    }
+
+    override suspend fun getMovieDetails(
+        movieId: Int,
+        apiKey: String
+    ): NetworkResult<MovieDetails> {
+        return remoteDataSource.getMovieDetails(
+            movieId,
+            apiKey
+        )
+    }
+
+    override suspend fun getSimilarMovies(movieId: Int, apiKey: String): NetworkResult<Movies> {
+        return remoteDataSource.getSimilarMovies(
+            movieId,
+            apiKey
+        )
+    }
+
+    override suspend fun getRecommendedMovies(movieId: Int, apiKey: String): NetworkResult<Movies> {
+        return remoteDataSource.getRecommendedMovies(
             movieId,
             apiKey
         )

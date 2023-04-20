@@ -1,5 +1,6 @@
 package com.example.flexxo.utils
 
+import android.util.Log
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -63,6 +64,7 @@ fun <T : Any> handleApi(
     return try {
         val response = execute()
         val body = response.body()
+        Log.d("oxoxtushar", "body: $body, response: $response")
         if (response.isSuccessful && body != null) {
             NetworkResult.Success(body)
         } else {

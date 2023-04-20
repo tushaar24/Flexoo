@@ -29,6 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:textAlignment="center"
         android:fontFamily="@font/roboto"
         android:maxLines="1"
         android:textColor="@color/white"

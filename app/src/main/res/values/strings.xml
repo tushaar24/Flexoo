@@ -21,4 +21,7 @@
     <string name="homescreen_top_rated_movies_title">Top Rates Movies</string>
     <string name="homescreen_upcoming_movies_title">Upcoming Movies</string>
     <string name="cast_title">Cast</string>
+    <string name="movie_release_date">%1$s on %2$s</string>
+    <string name="similar_movies">Similar Movies</string>
+    <string name="recommended_movies">Recommened Movies</string>
 </resources>

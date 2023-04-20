@@ -16,6 +16,9 @@
         <argument
             android:name="movieDetails"
             app:argType="com.example.flexxo.data.common.models.MovieDetails" />
+        <action
+            android:id="@+id/action_movieDetailFragment_self"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchMoviesFragment"

@@ -16,5 +16,14 @@ data class MovieDetails(
     val title: String,
     val video: Boolean,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+
+    /*
+        Below fields are required when you request details for a particular movie. These fields will have default
+        values when getting data from api points like: GET Latest Movies, GET Popular Movies etc.
+     */
+
+    val runtime: Int?,
+    val status: String?
+
 ) : Serializable

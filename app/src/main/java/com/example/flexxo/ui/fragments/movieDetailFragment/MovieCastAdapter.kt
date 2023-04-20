@@ -1,12 +1,12 @@
 package com.example.flexxo.ui.fragments.movieDetailFragment
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.flexxo.R
 import com.example.flexxo.data.common.models.MovieCastEntity
 import com.example.flexxo.databinding.ItemCastBinding
 import com.example.flexxo.utils.Constants.IMAGE_POST_BASE_URL
@@ -30,6 +30,7 @@ class MovieCastAdapter(
 
             Glide.with(mContext)
                 .load(profileImageUrl)
+                .placeholder(R.drawable.ic_placeholder_cast)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .thumbnail(0.5f)
                 .into(binding.ivProfileImage)
