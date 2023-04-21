@@ -27,7 +27,12 @@ class HomeFragmentV2 : Fragment() {
     ): View {
         _binding = FragmentHomeV2Binding.inflate(inflater, container, false)
         mViewModel = ViewModelProvider(requireActivity())[HomeFragmentViewModel::class.java]
-        return binding.root
+        if(mViewModel.binding != null){
+            return mViewModel.binding!!.root
+        }else{
+            mViewModel.setBinding(binding)
+            return binding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
