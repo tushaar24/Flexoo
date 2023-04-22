@@ -2,6 +2,7 @@ package com.example.flexxo.data.remote.api.services
 
 import com.example.flexxo.data.common.models.MovieCreditsEntity
 import com.example.flexxo.data.common.models.MovieDetails
+import com.example.flexxo.data.common.models.MovieVideos
 import com.example.flexxo.data.common.models.Movies
 import com.example.flexxo.utils.NetworkResult
 import retrofit2.http.GET
@@ -58,4 +59,9 @@ interface MoviesService {
         @Query("api_key") apiKey: String
     ): NetworkResult<Movies>
 
+    @GET("/3/movie/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): NetworkResult<MovieVideos>
 }
