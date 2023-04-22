@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentSearchMoviesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchMoviesFragment : Fragment() {
 
     private var _binding: FragmentSearchMoviesBinding? = null
     private val binding get() = _binding!!
     private lateinit var mAdapter: SearchMoviesAdapter
-    private lateinit var searchMoviesViewModel: SearchMoviesViewModel
+    private val searchMoviesViewModel: SearchMoviesViewModel by viewModels()
     private var savedQuery: String = ""
 
     override fun onCreateView(
@@ -27,8 +29,6 @@ class SearchMoviesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSearchMoviesBinding.inflate(inflater, container, false)
-        searchMoviesViewModel =
-            ViewModelProvider(requireActivity()).get(SearchMoviesViewModel::class.java)
         return binding.root
     }
 
@@ -44,7 +44,7 @@ class SearchMoviesFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                     savedQuery = query
                 }
-                searchMoviesViewModel.movieList.observe(requireActivity()) {
+                searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
                     mAdapter.setData(it.results)
                     binding.progressBar.visibility = View.GONE
                 }
@@ -58,7 +58,7 @@ class SearchMoviesFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                     savedQuery = query
                 }
-                searchMoviesViewModel.movieList.observe(requireActivity()) {
+                searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
                     mAdapter.setData(it.results)
                     binding.progressBar.visibility = View.GONE
                 }
@@ -95,7 +95,7 @@ class SearchMoviesFragment : Fragment() {
         }
 
         searchMoviesViewModel.searchMovies(savedQuery)
-        searchMoviesViewModel.movieList.observe(requireActivity()) {
+        searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
             mAdapter.setData(it.results)
             binding.progressBar.visibility = View.GONE
         }

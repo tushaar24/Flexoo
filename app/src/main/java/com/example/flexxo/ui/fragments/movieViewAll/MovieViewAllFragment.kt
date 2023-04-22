@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentMovieViewAllBinding
-import com.example.flexxo.ui.fragments.homeFragment.HomeMoviesAdapter
 import com.example.flexxo.ui.fragments.homeFragment.MoviesAdapter
 import com.example.flexxo.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MovieViewAllFragment : Fragment() {
 
     private var _binding: FragmentMovieViewAllBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mViewModel: MovieViewAllViewModel
+    private val mViewModel: MovieViewAllViewModel by viewModels()
     private val args: MovieViewAllFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -32,7 +33,6 @@ class MovieViewAllFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieViewAllBinding.inflate(inflater, container, false)
-        mViewModel = ViewModelProvider(requireActivity()).get(MovieViewAllViewModel::class.java)
         return binding.root
     }
 
@@ -106,7 +106,7 @@ class MovieViewAllFragment : Fragment() {
         mAdapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         mAdapter.setLastPositionToMinusOne()
-        mAdapter.isDataSet.observe(requireActivity()) { dataSetChanged ->
+        mAdapter.isDataSet.observe(viewLifecycleOwner) { dataSetChanged ->
             if (dataSetChanged) {
                 setRecyclerViewVisible()
             }
