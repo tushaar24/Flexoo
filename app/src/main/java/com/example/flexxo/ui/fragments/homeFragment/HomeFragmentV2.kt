@@ -64,7 +64,7 @@ class HomeFragmentV2 : Fragment() {
     }
 
     private fun setObservers() {
-        mViewModel.first15PopularMovies.observe(requireActivity()) { movies ->
+        mViewModel.first15PopularMovies.observe(viewLifecycleOwner) { movies ->
             val listOfPopularMovieDetails = mutableListOf<MovieDetails>()
             listOfPopularMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvLatestMovies.adapter =
@@ -83,7 +83,7 @@ class HomeFragmentV2 : Fragment() {
             constrainSet.applyTo(binding.clRoot)
         }
 
-        mViewModel.first15TopRatedMovies.observe(requireActivity()) { movies ->
+        mViewModel.first15TopRatedMovies.observe(viewLifecycleOwner) { movies ->
             val listOfTopRatedMovieDetails = mutableListOf<MovieDetails>()
             listOfTopRatedMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvTopRatedMovies.setItemViewCacheSize(0)
@@ -103,7 +103,7 @@ class HomeFragmentV2 : Fragment() {
             constrainSet.applyTo(binding.clRoot)
         }
 
-        mViewModel.first15UpcomingMovies.observe(requireActivity()) { movies ->
+        mViewModel.first15UpcomingMovies.observe(viewLifecycleOwner) { movies ->
             val listOfUpComingMovieDetails = mutableListOf<MovieDetails>()
             listOfUpComingMovieDetails.addAll(movies!!.results.subList(0, 16))
             binding.rvUpComingMovies.adapter =
