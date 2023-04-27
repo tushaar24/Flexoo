@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentSearchMoviesBinding
+import com.example.flexxo.utils.Constants.MOVIE_DETAILS_ARG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,19 +35,42 @@ class SearchMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpRecyclerView()
+        setUI()
+    }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (savedQuery.isNotEmpty() && savedQuery.isNotBlank()) {
+
+            binding.progressBar.visibility = View.VISIBLE
+
+            searchMoviesViewModel.searchMovies(savedQuery)
+            searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
+                setUIWhenQueryFetched(it.results)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setUI() {
+        setUpRecyclerView()
+        setUpSearchBarListener()
+    }
+
+    private fun setUpSearchBarListener() {
         binding.svMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
-                    searchMoviesViewModel.searchMovies(query)
-                    binding.progressBar.visibility = View.VISIBLE
-                    savedQuery = query
+                    searchForQuery(query)
                 }
                 searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
-                    mAdapter.setData(it.results)
-                    binding.progressBar.visibility = View.GONE
+                    setUIWhenQueryFetched(it.results)
                 }
 
                 return false
@@ -54,13 +78,10 @@ class SearchMoviesFragment : Fragment() {
 
             override fun onQueryTextChange(query: String?): Boolean {
                 if (query != null) {
-                    searchMoviesViewModel.searchMovies(query)
-                    binding.progressBar.visibility = View.VISIBLE
-                    savedQuery = query
+                    searchForQuery(query)
                 }
                 searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
-                    mAdapter.setData(it.results)
-                    binding.progressBar.visibility = View.GONE
+                    setUIWhenQueryFetched(it.results)
                 }
 
                 return false
@@ -68,11 +89,22 @@ class SearchMoviesFragment : Fragment() {
         })
     }
 
+    private fun setUIWhenQueryFetched(data: List<MovieDetails>) {
+        mAdapter.setData(data)
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun searchForQuery(query: String) {
+        searchMoviesViewModel.searchMovies(query)
+        binding.progressBar.visibility = View.VISIBLE
+        savedQuery = query
+    }
+
     private fun setUpRecyclerView() {
 
         val onClick: (MovieDetails) -> Unit = {
             val bundle = Bundle()
-            bundle.putSerializable("movieDetails", it)
+            bundle.putSerializable(MOVIE_DETAILS_ARG, it)
             val direction =
                 SearchMoviesFragmentDirections.actionSearchMoviesFragmentToMovieDetailFragment(
                     it
@@ -85,20 +117,6 @@ class SearchMoviesFragment : Fragment() {
         binding.rvSearchMoviesResult.layoutManager = LinearLayoutManager(requireContext())
         mAdapter.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (savedQuery.isNotEmpty() && savedQuery.isNotBlank()) {
-            binding.progressBar.visibility = View.VISIBLE
-        }
-
-        searchMoviesViewModel.searchMovies(savedQuery)
-        searchMoviesViewModel.movieList.observe(viewLifecycleOwner) {
-            mAdapter.setData(it.results)
-            binding.progressBar.visibility = View.GONE
-        }
     }
 
 }

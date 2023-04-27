@@ -28,9 +28,7 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun getFirst15TopRatedMovies() {
         viewModelScope.launch {
-            val result = repository.getTopRatedMovies(API_KEY, 1)
-
-            when (result) {
+            when (val result = repository.getTopRatedMovies(API_KEY, 1)) {
                 is NetworkResult.Success -> {
                     _first15TopRatedMovies.postValue(result.data)
                 }
@@ -43,9 +41,8 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun getFirst15PopularMovies(){
         viewModelScope.launch {
-            val result = repository.getPopularMovies(API_KEY, 1)
 
-            when (result) {
+            when (val result = repository.getPopularMovies(API_KEY, 1)) {
                 is NetworkResult.Success -> {
                     _first15PopularMovies.postValue(result.data)
                 }
@@ -58,8 +55,7 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun getFirst15UpcomingMovies(){
         viewModelScope.launch {
-            val result = repository.getUpComingMovies(API_KEY, 1)
-            when (result) {
+            when (val result = repository.getUpComingMovies(API_KEY, 1)) {
                 is NetworkResult.Success -> {
                     _first15UpComingMovies.postValue(result.data)
                 }

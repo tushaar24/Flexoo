@@ -9,13 +9,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flexxo.R
 import com.example.flexxo.data.common.models.MovieDetails
 import com.example.flexxo.databinding.FragmentMovieViewAllBinding
 import com.example.flexxo.ui.fragments.homeFragment.MoviesAdapter
-import com.example.flexxo.utils.Constants
+import com.example.flexxo.utils.Constants.MOVIE_DETAILS_ARG
+import com.example.flexxo.utils.Constants.POPULAR_ARG
+import com.example.flexxo.utils.Constants.TOP_RATED_ARG
+import com.example.flexxo.utils.Constants.UPCOMING_ARG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,50 +42,7 @@ class MovieViewAllFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.ivBackBtn.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
-
-
-        val layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.rvMovies.layoutManager = layoutManager
-        binding.rvMovies.addItemDecoration(GridSpacingItemDecoration(3, 16, false))
-
-        when (args.type) {
-            "latest" -> {
-                viewLifecycleOwner.lifecycleScope.launch{
-                    mViewModel.getPopularMovies().collectLatest { movies ->
-                        val adapter = setAdapter()
-                        binding.rvMovies.adapter = adapter
-                        adapter.submitData(lifecycle, movies)
-                    }
-                }
-                binding.tvTitle.text = requireContext().getString(R.string.homescreen_latest_movie_title)
-            }
-
-            "top rated" -> {
-                viewLifecycleOwner.lifecycleScope.launch{
-                    mViewModel.getTopRatedMovies().collectLatest { movies ->
-                        val adapter = setAdapter()
-                        binding.rvMovies.adapter = adapter
-                        adapter.submitData(lifecycle, movies)
-                    }
-                }
-                binding.tvTitle.text = requireContext().getString(R.string.homescreen_top_rated_movies_title)
-            }
-
-            "upcoming" -> {
-                viewLifecycleOwner.lifecycleScope.launch{
-                    mViewModel.getUpComingMovies().collectLatest { movies ->
-                        val adapter = setAdapter()
-                        binding.rvMovies.adapter = adapter
-                        adapter.submitData(lifecycle, movies)
-                    }
-                }
-                binding.tvTitle.text = requireContext().getString(R.string.homescreen_upcoming_movies_title)
-            }
-        }
+        setUI()
     }
 
     override fun onDestroyView() {
@@ -89,10 +50,54 @@ class MovieViewAllFragment : Fragment() {
         _binding = null
     }
 
+    private fun setUI() {
+
+        binding.ivBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        setRecyclerViewBasedOnMovieType()
+    }
+
+    private fun setRecyclerViewBasedOnMovieType() {
+        when (args.type) {
+
+            POPULAR_ARG -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    mViewModel.getPopularMovies().collectLatest { movies ->
+                        setAdapter(movies)
+                    }
+                }
+                binding.tvTitle.text =
+                    requireContext().getString(R.string.homescreen_latest_movie_title)
+            }
+
+            TOP_RATED_ARG -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    mViewModel.getTopRatedMovies().collectLatest { movies ->
+                        setAdapter(movies)
+                    }
+                }
+                binding.tvTitle.text =
+                    requireContext().getString(R.string.homescreen_top_rated_movies_title)
+            }
+
+            UPCOMING_ARG -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    mViewModel.getUpComingMovies().collectLatest { movies ->
+                        setAdapter(movies)
+                    }
+                }
+                binding.tvTitle.text =
+                    requireContext().getString(R.string.homescreen_upcoming_movies_title)
+            }
+        }
+    }
+
     private fun getOnMovieItemClicked(): (MovieDetails) -> Unit {
         val onMovieItemClicked: (MovieDetails) -> Unit = { movie ->
             val bundle = Bundle()
-            bundle.putSerializable(Constants.MOVIE_DETAILS, movie)
+            bundle.putSerializable(MOVIE_DETAILS_ARG, movie)
             val direction =
                 MovieViewAllFragmentDirections.actionMovieViewAllFragmentToMovieDetailFragment(movie)
             findNavController().navigate(direction)
@@ -100,7 +105,10 @@ class MovieViewAllFragment : Fragment() {
         return onMovieItemClicked
     }
 
-    private fun setAdapter(): MoviesAdapter {
+    private fun setAdapter(movies: PagingData<MovieDetails>) {
+        val layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rvMovies.layoutManager = layoutManager
+        binding.rvMovies.addItemDecoration(GridSpacingItemDecoration(3, 16, false))
         val onMovieItemClicked = getOnMovieItemClicked()
         val mAdapter = MoviesAdapter(onMovieItemClicked, requireContext(), true)
         mAdapter.stateRestorationPolicy =
@@ -111,7 +119,8 @@ class MovieViewAllFragment : Fragment() {
                 setRecyclerViewVisible()
             }
         }
-        return mAdapter
+        binding.rvMovies.adapter = mAdapter
+        mAdapter.submitData(lifecycle, movies)
     }
 
     private fun setRecyclerViewVisible() {
