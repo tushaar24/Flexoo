@@ -31,9 +31,9 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragmentV22"
-        android:name="com.example.flexxo.ui.fragments.homeFragment.HomeFragmentV2"
+        android:name="com.example.flexxo.ui.fragments.homeFragment.HomeFragment"
         android:label="fragment_home_v2"
-        tools:layout="@layout/fragment_home_v2" >
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragmentV22_to_searchMoviesFragment"
             app:destination="@id/searchMoviesFragment" />

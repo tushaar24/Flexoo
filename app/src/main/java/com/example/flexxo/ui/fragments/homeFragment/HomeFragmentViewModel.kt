@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flexxo.data.common.models.Movies
-import com.example.flexxo.databinding.FragmentHomeV2Binding
+import com.example.flexxo.databinding.FragmentHomeBinding
 import com.example.flexxo.domain.repository.Repository
 import com.example.flexxo.utils.Constants.API_KEY
 import com.example.flexxo.utils.NetworkResult
@@ -23,7 +23,7 @@ class HomeFragmentViewModel @Inject constructor(
     val first15TopRatedMovies get() = _first15TopRatedMovies
     val first15PopularMovies get() = _first15PopularMovies
     val first15UpcomingMovies get() = _first15UpComingMovies
-    private var _binding: FragmentHomeV2Binding? = null
+    private var _binding: FragmentHomeBinding? = null
     val binding get() = _binding
 
     fun getFirst15TopRatedMovies() {
@@ -67,7 +67,7 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
-    fun setBinding(binding: FragmentHomeV2Binding) {
+    fun setBinding(binding: FragmentHomeBinding) {
         _binding = binding
     }
 }
